@@ -55,6 +55,10 @@ eng = {
     "7" : "--...",
     "8" : "---..",
     "9" : "----.",
+    "," : ",",
+    "." : ".",
+    "!" : "!",
+    "?" : "?",
 } # type: Dict[str, str]
 
 
@@ -97,7 +101,7 @@ def decode(msg: str) -> str:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Translate English to Morse code, and vice versa.')
     parser.add_argument('-v', '--version', help='Show the version.', action='version', version='Morse 0.1')
-    parser.add_argument('msg', metavar='M', type=str, nargs=1,
+    parser.add_argument('msg', type=str, nargs=1,
                         help='The message to be decoded. Input type will be automatically detected and converted. \
                         Must be wrapped in quotes.')
 
