@@ -1,0 +1,4 @@
+docopt==0.6.2
+mypy-lang==0.2.0
+Terminator==0.97
+wheel==0.24.0
