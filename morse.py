@@ -11,19 +11,9 @@
 # License: MIT
 #
 
-"""Morse.py - Translate English to Morse code, and vice versa.
-
-Usage:
-  morse.py [options] <msg>...
-
-Options:
-  -h, --help     Show this screen.
-  -v, --version  Show the version.
-"""
-
 
 import re
-from docopt import docopt
+import argparse
 from typing import Dict
 
 
@@ -80,9 +70,9 @@ def morsep(msg: str) -> bool:
 
 def morse_to_eng(msg: str) -> str:
     out = "" # type: str
-    msg = re.split("/| ", msg)
-    msg = [e for e in msg if e]
-    for char in msg:
+    split_msg = re.split(" ", msg) # type: list
+    filtered_msg = [e for e in split_msg if e] # type: list
+    for char in filtered_msg:
         c = morse[char] # type: str
         out += c
     return("".join(out))
@@ -105,6 +95,12 @@ def decode(msg: str) -> str:
 
 
 if __name__ == '__main__':
-    args = docopt(__doc__, version = "Morse.py 0.1") # type: Dict
-    out = decode(args['<msg>'][0]) # type: str
+    parser = argparse.ArgumentParser(description='Translate English to Morse code, and vice versa.')
+    parser.add_argument('-v', '--version', help='Show the version.', action='version', version='Morse 0.1')
+    parser.add_argument('msg', metavar='M', type=str, nargs=1,
+                        help='The message to be decoded. Input type will be automatically detected and converted. \
+                        Must be wrapped in quotes.')
+
+    args = parser.parse_args()
+    out = decode(args.msg[0]) # type: str
     print("{}".format(out))
