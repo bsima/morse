@@ -85,9 +85,9 @@ def morse_to_eng(msg: str) -> str:
     for char in filtered_msg:
         try:
             c = morse[char] # type: str
-            out += c
-        except NameError:
+        except KeyError:
             raise(InvalidMorseLetter)
+        out += c
     return("".join(out))
 
 
@@ -96,9 +96,9 @@ def eng_to_morse(msg: str) -> str:
     for char in msg:
         try:
             c = eng[char] # type: str
-            out += "{} ".format(c)
-        except NameError:
+        except KeyError:
             raise(InvalidEnglishLetter)
+        out += "{} ".format(c)
     return("".join(out))
 
 
