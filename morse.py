@@ -66,10 +66,8 @@ morse = {v: k for k, v in eng.items()} # type: Dict[str, str]
 
 
 def morsep(msg: str) -> bool:
-    if msg[0][0] in ['.', '-', '/']:
-        return True
-    else:
-        return False
+    "Predicate for detecting Morse Code."
+    return msg[0][0] in ['.', '-', '/']
         
 
 def morse_to_eng(msg: str) -> str:
