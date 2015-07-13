@@ -65,6 +65,14 @@ eng = {
 morse = {v: k for k, v in eng.items()} # type: Dict[str, str]
 
 
+class InvalidMorseLetter(Exception):
+    pass
+
+
+class InvalidEnglishLetter(Exception):
+    pass
+
+
 def morsep(msg: str) -> bool:
     "Predicate for detecting Morse Code."
     return msg[0][0] in ['.', '-', '/']
@@ -75,16 +83,22 @@ def morse_to_eng(msg: str) -> str:
     split_msg = re.split(" ", msg) # type: list
     filtered_msg = [e for e in split_msg if e] # type: list
     for char in filtered_msg:
-        c = morse[char] # type: str
-        out += c
+        try:
+            c = morse[char] # type: str
+            out += c
+        except NameError:
+            raise(InvalidMorseLetter)
     return("".join(out))
 
 
 def eng_to_morse(msg: str) -> str:
     out = "" # type: str
     for char in msg:
-        c = eng[char] # type: str
-        out += "{} ".format(c)
+        try:
+            c = eng[char] # type: str
+            out += "{} ".format(c)
+        except NameError:
+            raise(InvalidEnglishLetter)
     return("".join(out))
 
 
