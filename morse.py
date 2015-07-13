@@ -104,10 +104,11 @@ def eng_to_morse(msg: str) -> str:
 
 def decode(msg: str) -> str:
     "Main control flow."
-    if morsep(msg) == True:
-        return(morse_to_eng(msg))
+    lower_msg = msg.lower()
+    if morsep(lower_msg) == True:
+        return(morse_to_eng(lower_msg))
     else:
-        return(eng_to_morse(msg))
+        return(eng_to_morse(lower_msg))
 
 
 if __name__ == '__main__':
