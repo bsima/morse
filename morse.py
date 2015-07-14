@@ -66,57 +66,60 @@ morse = {v: k for k, v in eng.items()} # type: Dict[str, str]
 
 
 class InvalidMorseLetter(Exception):
+    "Handle errors when processing Morse Code."
     pass
 
 
 class InvalidEnglishLetter(Exception):
+    "Handle errors when processing English."
     pass
 
 
 def morsep(msg: str) -> bool:
     "Predicate for detecting Morse Code."
     return msg[0][0] in ['.', '-', '/']
-        
+
 
 def morse_to_eng(msg: str) -> str:
-    out = "" # type: str
+    """Translate Morse code to English.
+
+    Will raise an InvalidMorseLetter if an error during
+    the translation occurs."""
     split_msg = re.split(" ", msg) # type: list
     filtered_msg = [e for e in split_msg if e] # type: list
-    for char in filtered_msg:
-        try:
-            c = morse[char] # type: str
-        except KeyError:
-            raise(InvalidMorseLetter)
-        out += c
-    return("".join(out))
-
+    try:
+        return ''.join("{}".format(morse[char]) for char in filtered_msg)
+    except KeyError:
+        raise InvalidMorseLetter
 
 def eng_to_morse(msg: str) -> str:
-    out = "" # type: str
-    for char in msg:
-        try:
-            c = eng[char] # type: str
-        except KeyError:
-            raise(InvalidEnglishLetter)
-        out += "{} ".format(c)
-    return("".join(out))
+    """Translate English into Morse Code.
+
+    Will rais an InvalidEnglishLetter if an error during
+    the translation occurs."""
+    try:
+        return ''.join("{} ".format(eng[char]) for char in msg)
+    except KeyError:
+        raise InvalidEnglishLetter
 
 
 def decode(msg: str) -> str:
     "Main control flow."
     lower_msg = msg.lower()
     if morsep(lower_msg) == True:
-        return(morse_to_eng(lower_msg))
+        return morse_to_eng(lower_msg)
     else:
-        return(eng_to_morse(lower_msg))
+        return eng_to_morse(lower_msg)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Translate English to Morse code, and vice versa.')
-    parser.add_argument('-v', '--version', help='Show the version.', action='version', version='Morse 0.1')
+    parser.add_argument('-v', '--version', help='Show the version.', action='version',
+            version='Morse 0.1')
     parser.add_argument('msg', type=str, nargs=1,
-                        help='The message to be decoded. Input type will be automatically detected and converted. \
-                        Must be wrapped in quotes.')
+                        help="""The message to be decoded.
+                        Input type will be automatically detected and converted.
+                        Must be wrapped in quotes.""")
 
     args = parser.parse_args()
     out = decode(args.msg[0]) # type: str
